@@ -7,25 +7,23 @@ function App() {
     fetch('https://api.coinpaprika.com/v1/tickers')
       .then((response) => response.json())
       .then((json) => {
+        console.log(json)
         setCoins(json)
         setLoading(false)
       })
   }, [])
+  const CoinList = coins.map((coin) => (
+    <li>
+      {coin.rank}. {coin.name}({coin.symbol}) {coin.quotes.USD.price} USD
+    </li>
+  ))
   return (
     <div className="App">
       <h1>Coin Tracker</h1>
-      {!loading ? (
-        <h4>You can see {coins.length} coins information right here!</h4>
-      ) : null}
+      {loading ? null : <h3>We show {coins.length} coins here</h3>}
       <hr />
       {loading ? <strong>Loading...</strong> : null}
-      <ul>
-        {coins.map((coin, index) => (
-          <li key={index}>
-            {coin.rank}. {coin.name} ({coin.symbol}) {coin.quotes.USD.price} USD
-          </li>
-        ))}
-      </ul>
+      <ul>{CoinList}</ul>
     </div>
   )
 }
